@@ -11,9 +11,8 @@ CTestTestfile.cmake
 _deps
 *.out
 *.exe
-build
+build/*
 !build/Run.sh
 !build/CMakeLists.txt
-UnitTests/build
+UnitTests/build/*
 !UnitTests/build/Run.sh
-!UnitTests/build/CMakeLists.txt
