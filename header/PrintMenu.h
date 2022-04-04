@@ -4,9 +4,8 @@
 #include "ReadFile.h"
 #include <iostream>
 #include <vector>
-#include "Print.h"
 
-class PrintMenu : public Print
+class PrintMenu
 {
 private:
     const std::string path="../MENU/"; 
