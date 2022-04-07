@@ -16,3 +16,4 @@ build/*
 !build/CMakeLists.txt
 UnitTests/build/*
 !UnitTests/build/Run.sh
+.vscode
