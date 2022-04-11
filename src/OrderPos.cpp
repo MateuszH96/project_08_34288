@@ -24,6 +24,7 @@ void OrderPos::pickPos()
     {
         system("clear");
         menu->print();
+        std::cout<<"Aby wyjść podaj 0"<<std::endl;
         std::cout << "Podaj numer pozycji: ";
         std::cin >> pos;
         if (pos >= menu->getMenuList().size() || pos <= 0)
@@ -51,6 +52,7 @@ void OrderPos::pickPos()
             list.push_back(Ingredient(menu->getMenuList()[pos].getName(), pricePos));
             price+=pricePos;
         }
+        delete menu;
         menu = new PrintMenu("ingredient.csv");
     } while (true);
     return;
