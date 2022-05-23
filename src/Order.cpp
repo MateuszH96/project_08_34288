@@ -14,21 +14,19 @@ Order::~Order()
 
 void Order::addOrderPos()
 {
-    uint8_t choose;
+    int choose;
+    list = std::vector<OrderPos>();
     std::cout<<"wybierz pozycję:\n"<<
                 "1.Dodaj zestaw\n"<<
                 "2.Dodaj pizzę\n";
     std::cin>>choose;
-    switch (choose)
-    {
-    case 1:
-        list.push_back(OrderPos(OrderFlag::SET));
-        break;
-    case 2:
-        list.push_back(OrderPos());
-        break;
-    default:
-        break;
+    OrderPos* input;
+    if(choose==1){
+        input=new OrderPos(OrderFlag::SET);
+        list.push_back(*input);
+    }else if(choose == 2){
+        OrderPos input2;
+        list.push_back(input2);
     }
 }
 
