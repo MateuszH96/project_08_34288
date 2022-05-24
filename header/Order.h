@@ -11,9 +11,11 @@ private:
     void printOrder();
 public:
     Order();
+    void printMenu();
     void addOrderPos();
     void deleteOrderPos();
     void modifyOrderPos();
+    void generateBill();
     ~Order();
 };
 #endif
