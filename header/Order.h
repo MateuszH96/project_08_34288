@@ -13,12 +13,16 @@ private:
     uint8_t numOfOrder;
     std::vector<std::vector<Ingredient>> list;
     void printOrder();
+    void generateOrderBill(std::string filename);
+    std::vector<std::string> splitPromo(std::string input);
+    double getTotalPrice();
+    std::string convertOrderToString();
 public:
     Order();
     void printMenu();
     void addOrderPos();
     void deleteOrderPos();
-    void modifyOrderPos();
+    void checkOrderPos();
     void generateBill();
     ~Order();
 };
