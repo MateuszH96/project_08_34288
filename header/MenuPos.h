@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #define SEPARATOR "\t"
+#define PRICE_SEPARATOR "\n\t\t\t\t"
 class MenuPos
 {
 private:

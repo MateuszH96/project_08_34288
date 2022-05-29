@@ -61,7 +61,7 @@ double MenuPos::getLargeSize()
 
 std::ostream& operator<<(std::ostream& out,const MenuPos toPrint)
 {
-    out<<toPrint.id<<". "<<toPrint.name<<SEPARATOR <<toPrint.smallSize<<SEPARATOR 
+    out<<toPrint.id<<"."<<toPrint.name<<SEPARATOR<<PRICE_SEPARATOR <<toPrint.smallSize<<SEPARATOR 
         <<toPrint.mediumSize<<SEPARATOR <<toPrint.largeSize;
     return out;
 }
