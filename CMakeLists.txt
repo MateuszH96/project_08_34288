@@ -6,4 +6,5 @@ set(NAME_EXE main.cpp)
 add_executable(${PROJECT_NAME} ${NAME_EXE})
 
 add_subdirectory(src)
+add_compile_options(-Og -ggdb -fsanitize=address -lasan)
 target_link_libraries(${PROJECT_NAME} SRC)

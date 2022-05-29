@@ -1,12 +1,13 @@
-#include <iostream>
-#include <fstream>
-#include <cmath>
+//
+// Created by mateusz on 29.05.22.
+//
+
+#ifndef PIZZATIME_READFILE_H
+#define PIZZATIME_READFILE_H
 #include "Read.h"
 #include "../exceptions/FailOpen.h"
 #include "../exceptions/InvalidInput.h"
-#ifndef READ_FILE_H
-#define READ_FILE_H
-
+#include <fstream>
 
 class ReadFile : public Read
 {
@@ -15,4 +16,4 @@ public:
     std::string getStringFromFile(Flag::Value flags = Flag::ONE_LINE,uint32_t numOfLine=1);
 };
 
-#endif
+#endif //PIZZATIME_READFILE_H

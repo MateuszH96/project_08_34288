@@ -1,5 +1,9 @@
-#ifndef MENU_POS_H
-#define MENU_POS_H
+//
+// Created by mateusz on 29.05.22.
+//
+
+#ifndef PIZZATIME_MENUPOS_H
+#define PIZZATIME_MENUPOS_H
 #include <iostream>
 #include <vector>
 #define SEPARATOR "\t"
@@ -25,4 +29,4 @@ public:
     friend std::ostream &operator<<(std::ostream &out, const MenuPos toPrint);
 };
 
-#endif
+#endif //PIZZATIME_MENUPOS_H

@@ -1,18 +1,18 @@
 #include "../header/Order.h"
+
 uint8_t Order::num = 0;
-Order::Order()
-{
-    list = std::vector<OrderPos>();
+
+Order::Order() {
+    list = std::vector<std::vector<Ingredient>>();
     numOfOrder = num;
     num = num < 100 ? num++ : 0;
 }
-Order::~Order()
-{
+
+Order::~Order() {
     list.clear();
 }
 
-void Order::addOrderPos()
-{
+void Order::addOrderPos() {
     OrderPos *orderPos;
     int input;
     system("clear");
@@ -23,39 +23,36 @@ void Order::addOrderPos()
               << "3.Pizza 50/50\n"
               << "4.2x Pizza + napój gratis\n";
     std::cin >> input;
-    switch (input)
-    {
-    case 0:
-        return;
-    case 1:
-        orderPos=new OrderPos(PIZZA);
-        break;
-    case 2:
-        orderPos=new OrderPos(SET);
-        break;
-    case 3:
-        orderPos=new OrderPos(HALF_PIZZA);
-        break;
-    case 4:
-        orderPos=new OrderPos(PIZZA_AND_DRINK);
-        break;
-    default:
-        orderPos=new OrderPos(ERROR);
-        std::cout << "nieprawidłowa wartość!\n(nacisnij dowolny klawisz)\n";
-        break;
+    switch (input) {
+        case 0:
+            return;
+        case 1:
+            orderPos = new OrderPos(PIZZA);
+            break;
+        case 2:
+            orderPos = new OrderPos(SET);
+            break;
+        case 3:
+            orderPos = new OrderPos(HALF_PIZZA);
+            break;
+        case 4:
+            orderPos = new OrderPos(PIZZA_AND_DRINK);
+            break;
+        default:
+            orderPos = new OrderPos(ERROR);
+            std::cout << "nieprawidłowa wartość!\n(nacisnij dowolny klawisz)\n";
+            break;
     }
-    
-    
-    if (orderPos->getIsAdded())
-    {
-        std::cout<<"Rozmiar: "<<list.size()<<std::endl;
-        list.push_back(*orderPos);
+
+
+    if (orderPos->getIsAdded()) {
+        this->list.push_back(orderPos->getList());
     }
-    //orderPos=NULL;
+    orderPos = NULL;
 
 }
-void Order::printMenu()
-{
+
+void Order::printMenu() {
     //system("clear");
     std::cout << "Wybierz pozyceję:\n"
               << "0.Zakończ\n"
@@ -64,28 +61,24 @@ void Order::printMenu()
               << "3.Modyfikuj\n"
               << "4.Generuj Paragon\n";
 }
-void Order::printOrder()
-{
-    uint32_t numPos = 0;
-    for (auto &&i : list)
-    {
-        std::cout << ++numPos << '.' << i << std::endl;
+
+void Order::printOrder() {
+    for (unsigned i = 0; i < list.size(); i++) {
+        std::cout << list[i][0].name << " - " << list[i][0].price<<std::endl;
+        for (unsigned j = 1; j < list[i].size(); ++j) {
+            std::cout<<"\t\t\t\t"<< list[i][j].name << " - " << list[i][j].price<<std::endl;
+        }
     }
 }
 
-void Order::deleteOrderPos()
-{
+void Order::deleteOrderPos() {
     printOrder();
 }
 
-void Order::modifyOrderPos()
-{
+void Order::modifyOrderPos() {
     printOrder();
 }
-void Order::generateBill()
-{
-    for (auto &&i : list)
-    {
-        std::cout<<i<<std::endl;   
-    }
+
+void Order::generateBill() {
+    printOrder();
 }

@@ -1,9 +1,7 @@
 #include "../header/OrderPos.h"
-#include <unistd.h>
-#include <iomanip>
+
 OrderPos::OrderPos(TYPE_POS typePos)
 {
-    price = 0.0;
     isAdded = false;
     list = std::vector<Ingredient>();
     if (typePos != ERROR)
@@ -59,6 +57,7 @@ void OrderPos::addPos(TYPE_POS typePos)
         {
             std::cout << "Podaj rozmiar(S/M/L): ";
             std::cin >> size;
+            std::string sizeToAdd(1,size);
             double priceSize = getPriceBySize(size, input-1);
             if (priceSize)
             {
@@ -77,13 +76,12 @@ void OrderPos::addPos(TYPE_POS typePos)
                     repeat = false;
                     break;
                 case HALF_PIZZA:
-                    toAdd.name = "50/50 - "+toupper(size)+ '-' + toAdd.name;
                     halfPizza(toAdd, size);
                     list.push_back(toAdd);
                     repeat = false;
                     break;
                 case SET:
-                    toAdd.name = toupper(size)+ "-" + toAdd.name;
+                    toAdd.name = sizeToAdd+ "-" + toAdd.name;
                     list.push_back(toAdd);
                     repeat = false;
                     break;
@@ -152,7 +150,7 @@ void OrderPos::halfPizza(ingredient &toAdd, char size)
         std::cin >> input;
         if (input > 0 && input <= menu->getMenuList().size())
         {
-            toAdd.name += menu->getMenuList()[input - 1].getName();
+            toAdd.name +="+" + menu->getMenuList()[input - 1].getName();
             toAdd.price += setPrecision((getPriceBySize(size, input - 1) / 2.0), 2);
             repeat = false;
         }
@@ -165,13 +163,12 @@ void OrderPos::halfPizza(ingredient &toAdd, char size)
 void OrderPos::removeIngredient()
 {
     unsigned pos;
-    std::cout << *this << std::endl;
+    //std::cout << *this << std::endl;
 
     std::cout << "podaj numer dodatku do usunięcia: ";
     std::cin >> pos;
     if (pos > 0 && pos < list.size())
     {
-        price -= list[pos - 1].price;
         list.erase(list.begin() + pos);
     }
 }
@@ -203,4 +200,7 @@ std::ostream &operator<<(std::ostream &out, const OrderPos &input)
         out << '\t' << i << ". " << input.list[i].name << '\t' << input.list[i].price<< "zł" << std::endl;
     }
     return out;
+}
+std::vector<Ingredient> OrderPos::getList() {
+    return list;
 }

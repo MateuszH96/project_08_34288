@@ -1,15 +1,22 @@
-#ifndef ORDER_POS_H
-#define ORDER_POS_H
+//
+// Created by mateusz on 29.05.22.
+//
+
+#ifndef PIZZATIME_ORDERPOS_H
+#define PIZZATIME_ORDERPOS_H
 #include <iostream>
 #include <vector>
 #include "PrintMenu.h"
 #include <map>
+#include <unistd.h>
+#include <iomanip>
+#include <cmath>
 typedef struct ingredient
 {
     std::string name;
     double price;
     ingredient(std::string _name = "", double _price = 0.0) : name(_name), price(_price) {}
-    
+
 } Ingredient;
 enum TYPE_POS
 {
@@ -22,10 +29,9 @@ enum TYPE_POS
 };
 class OrderPos
 {
-private:
+public:
     bool isAdded;
     PrintMenu *menu;
-    double price;
     Ingredient tmpIngtrdient;
     std::vector<Ingredient> list;
     void pickPos(TYPE_POS typePos);
@@ -39,7 +45,9 @@ public:
     OrderPos(TYPE_POS typePos);
     void removeIngredient();
     bool getIsAdded();
+    std::vector<Ingredient> getList();
+    void printList();
     ~OrderPos();
-    friend std::ostream &operator<<(std::ostream &out, const OrderPos &input);
+    //friend std::ostream &operator<<(std::ostream &out, const OrderPos &input);
 };
-#endif
+#endif //PIZZATIME_ORDERPOS_H

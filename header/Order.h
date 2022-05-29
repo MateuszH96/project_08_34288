@@ -1,5 +1,9 @@
-#ifndef ORDER_H
-#define ORDER_H
+//
+// Created by mateusz on 29.05.22.
+//
+
+#ifndef PIZZATIME_ORDER_H
+#define PIZZATIME_ORDER_H
 #include "OrderPos.h"
 #include "PrintMenu.h"
 class Order
@@ -7,7 +11,7 @@ class Order
 private:
     static uint8_t num;
     uint8_t numOfOrder;
-    std::vector<OrderPos> list;
+    std::vector<std::vector<Ingredient>> list;
     void printOrder();
 public:
     Order();
@@ -18,4 +22,4 @@ public:
     void generateBill();
     ~Order();
 };
-#endif
+#endif //PIZZATIME_ORDER_H

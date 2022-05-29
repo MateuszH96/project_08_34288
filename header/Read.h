@@ -1,5 +1,9 @@
-#ifndef READ_H
-#define READ_H
+//
+// Created by mateusz on 29.05.22.
+//
+
+#ifndef PIZZATIME_READ_H
+#define PIZZATIME_READ_H
 #include <iostream>
 
 typedef struct flag
@@ -18,4 +22,4 @@ public:
     Read(std::string _path) :  path(_path){}
     virtual std::string getStringFromFile(Flag::Value flags=flag::ONE_LINE,uint32_t numOfLine=1)=0;
 };
-#endif
+#endif //PIZZATIME_READ_H

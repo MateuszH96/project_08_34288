@@ -1,5 +1,9 @@
-#ifndef PRINT_MENU_H
-#define PRINT_MENU_H
+//
+// Created by mateusz on 29.05.22.
+//
+
+#ifndef PIZZATIME_PRINTMENU_H
+#define PIZZATIME_PRINTMENU_H
 #include "MenuPos.h"
 #include "ReadFile.h"
 #include <iostream>
@@ -8,7 +12,7 @@
 class PrintMenu
 {
 private:
-    const std::string path="../MENU/"; 
+    const std::string path="../MENU/";
     std::vector<MenuPos> menu;
     std::string filePath;
     std::vector<std::string> splitStr(std::string toSplit);
@@ -20,4 +24,4 @@ public:
     PrintMenu operator=(const PrintMenu& pm);
     void print();
 };
-#endif
+#endif //PIZZATIME_PRINTMENU_H
