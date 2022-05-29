@@ -1,4 +1,5 @@
 #include "../header/OrderPos.h"
+#include <unistd.h>
 #include <iomanip>
 OrderPos::OrderPos(TYPE_POS typePos)
 {
@@ -9,6 +10,7 @@ OrderPos::OrderPos(TYPE_POS typePos)
     {
         pickPos(typePos);
     }
+    
 }
 OrderPos::~OrderPos()
 {
@@ -28,6 +30,7 @@ void OrderPos::pickPos(TYPE_POS typePos)
         menu = new PrintMenu("set.csv");
         break;
     case PIZZA_AND_DRINK:
+        menu = new PrintMenu("set.csv");
         break;
     case INGREDIENTS:
         menu = new PrintMenu("ingredient.csv");
@@ -54,31 +57,43 @@ void OrderPos::addPos(TYPE_POS typePos)
 
         if (input > 0 && input <= menu->getMenuList().size())
         {
-            std::map<char, double> dirSize = {
-                {'s', menu->getMenuList()[input - 1].getSmallSize()},
-                {'S', menu->getMenuList()[input - 1].getSmallSize()},
-                {'m', menu->getMenuList()[input - 1].getMediumSize()},
-                {'M', menu->getMenuList()[input - 1].getMediumSize()},
-                {'l', menu->getMenuList()[input - 1].getLargeSize()},
-                {'L', menu->getMenuList()[input - 1].getLargeSize()}};
             std::cout << "Podaj rozmiar(S/M/L): ";
             std::cin >> size;
-            if (dirSize[size])
+            double priceSize = getPriceBySize(size, input-1);
+            if (priceSize)
             {
-                toAdd = ingredient(menu->getMenuList()[input - 1].getName(), dirSize[size]);
+                toAdd = ingredient(menu->getMenuList()[input - 1].getName(), priceSize);
                 switch (typePos)
                 {
                 case PIZZA:
+                    list.push_back(toAdd);
+                        char doRepeat;
+                    do
+                    {
+                        addAdditives("ingredient.csv");
+                        std::cout<<"Czy dodać kolejne dodatki?(Y/N)";
+                        std::cin>>doRepeat;
+                    } while (toupper(doRepeat)=='Y');
+                    repeat = false;
                     break;
                 case HALF_PIZZA:
-                    toAdd.name="50/50-"+toAdd.name;
+                    toAdd.name = "50/50 - "+toupper(size)+ '-' + toAdd.name;
                     halfPizza(toAdd, size);
+                    list.push_back(toAdd);
+                    repeat = false;
+                    break;
                 case SET:
+                    toAdd.name = toupper(size)+ "-" + toAdd.name;
+                    list.push_back(toAdd);
                     repeat = false;
                     break;
                 case PIZZA_AND_DRINK:
-                    break;
-                case INGREDIENTS:
+                    toAdd.name = "P+D - " + toAdd.name;
+                    list.push_back(toAdd);
+                    addAdditives("set.csv");
+                    addAdditives("drinks.csv");
+                    list[list.size()-1].price=0.0;
+                    repeat = false;
                     break;
                 }
             }
@@ -88,40 +103,57 @@ void OrderPos::addPos(TYPE_POS typePos)
             return;
         }
     } while (repeat);
-    std::cout << toAdd.name << "----" << toAdd.price << std::endl;
-    while (true)
-        ;
-
-    list.push_back(toAdd);
+    isAdded =true;
 }
-void OrderPos::addIngredient()
+void OrderPos::addAdditives(std::string file)
 {
-    pickPos(INGREDIENTS);
-}
-void OrderPos::halfPizza(ingredient &toAdd, char size)
-{
-    toAdd.name += "+";
-    // toAdd.price /= 2.0;
-    toAdd.price = setPrecision(toAdd.price / 2.0, 2);
+    delete menu;
     unsigned input;
+    menu = new PrintMenu(file);
+    system("clear");
+    menu->print();
     bool repeat = true;
     do
     {
-        std::cout << "Podaj drugą połowę: ";
+        std::cout << "Podaj numer pozycji: ";
         std::cin >> input;
         if (input > 0 && input <= menu->getMenuList().size())
         {
-            std::map<char, double> dirSize = {
-                {'s', menu->getMenuList()[input - 1].getSmallSize()},
-                {'S', menu->getMenuList()[input - 1].getSmallSize()},
-                {'m', menu->getMenuList()[input - 1].getMediumSize()},
-                {'M', menu->getMenuList()[input - 1].getMediumSize()},
-                {'l', menu->getMenuList()[input - 1].getLargeSize()},
-                {'L', menu->getMenuList()[input - 1].getLargeSize()}};
+            char size;
+            std::cout << "Podaj wielkość porcji(S/M/L): ";
+            std::cin >> size;
+            double priceSize = getPriceBySize(size, input-1);
+            if (priceSize)
+            {
+                ingredient toAdd(menu->getMenuList()[input - 1].getName(), priceSize);
+                list.push_back(toAdd);
+                repeat = false;
+            }
+        }
+        else if (input == 0)
+        {
+            repeat = false;
+        }
+        else
+        {
+            std::cout << "nieprawidłowa wartość!\n";
+        }
+
+    } while (repeat);
+}
+void OrderPos::halfPizza(ingredient &toAdd, char size)
+{
+    menu->print();
+    toAdd.price = setPrecision(toAdd.price / 2.0, 2);
+    unsigned input=0;
+    bool repeat = true;
+    do
+    {
+        std::cin >> input;
+        if (input > 0 && input <= menu->getMenuList().size())
+        {
             toAdd.name += menu->getMenuList()[input - 1].getName();
-            std::cout << toAdd.price << std::endl;
-            toAdd.price += setPrecision((dirSize[size] / 2.0), 2);
-            std::cout << toAdd.price << std::endl;
+            toAdd.price += setPrecision((getPriceBySize(size, input - 1) / 2.0), 2);
             repeat = false;
         }
         else
@@ -143,7 +175,17 @@ void OrderPos::removeIngredient()
         list.erase(list.begin() + pos);
     }
 }
-
+double OrderPos::getPriceBySize(char size, unsigned index)
+{
+    std::map<char, double> dirSize = {
+        {'s', menu->getMenuList()[index].getSmallSize()},
+        {'S', menu->getMenuList()[index].getSmallSize()},
+        {'m', menu->getMenuList()[index].getMediumSize()},
+        {'M', menu->getMenuList()[index].getMediumSize()},
+        {'l', menu->getMenuList()[index].getLargeSize()},
+        {'L', menu->getMenuList()[index].getLargeSize()}};
+    return dirSize[size];
+}
 bool OrderPos::getIsAdded()
 {
     return isAdded;
@@ -155,10 +197,10 @@ double OrderPos::setPrecision(double input, unsigned n)
 std::ostream &operator<<(std::ostream &out, const OrderPos &input)
 {
     out << input.list[0].name << '\t' << input.list[0].price << std::endl;
-    uint32_t i;
+    unsigned i;
     for (i = 1; i < input.list.size(); i++)
     {
-        out << '\t' << i << ". " << input.list[i].name << '\t' << input.list[i].price << std::endl;
+        out << '\t' << i << ". " << input.list[i].name << '\t' << input.list[i].price<< "zł" << std::endl;
     }
     return out;
 }

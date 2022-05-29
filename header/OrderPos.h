@@ -9,6 +9,7 @@ typedef struct ingredient
     std::string name;
     double price;
     ingredient(std::string _name = "", double _price = 0.0) : name(_name), price(_price) {}
+    
 } Ingredient;
 enum TYPE_POS
 {
@@ -31,10 +32,11 @@ private:
     void addPos(TYPE_POS typePos);
     double setPrecision(double input, unsigned n);
     void halfPizza(ingredient &toAdd, char size);
+    double getPriceBySize(char size, unsigned index);
+    void addAdditives(std::string file);
 
 public:
     OrderPos(TYPE_POS typePos);
-    void addIngredient();
     void removeIngredient();
     bool getIsAdded();
     ~OrderPos();
