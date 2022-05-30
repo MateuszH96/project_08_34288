@@ -33,15 +33,8 @@ double MenuPos::getLargeSize() {
     return largeSize;
 }
 
-<<<<<<< Updated upstream
-std::ostream& operator<<(std::ostream& out,const MenuPos toPrint)
-{
-    out<<toPrint.id<<"."<<toPrint.name<<SEPARATOR<<PRICE_SEPARATOR <<toPrint.smallSize<<SEPARATOR 
-        <<toPrint.mediumSize<<SEPARATOR <<toPrint.largeSize;
-=======
 std::ostream &operator<<(std::ostream &out, const MenuPos toPrint) {
     out << toPrint.id << "." << toPrint.name << SEPARATOR << PRICE_SEPARATOR << toPrint.smallSize << SEPARATOR
         << toPrint.mediumSize << SEPARATOR << toPrint.largeSize;
->>>>>>> Stashed changes
     return out;
 }
