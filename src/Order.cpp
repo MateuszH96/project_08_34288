@@ -1,12 +1,8 @@
 #include "../header/Order.h"
 #include "../header/WriteToFile.h"
 
-uint8_t Order::num = 0;
-
 Order::Order() {
     list = std::vector<std::vector<Ingredient>>();
-    numOfOrder = num;
-    num = num < 100 ? num++ : 0;
 }
 
 Order::~Order() {
@@ -17,7 +13,7 @@ void Order::addOrderPos() {
     OrderPos *orderPos;
     int input;
     system("clear");
-    std::cout << "Wybierz pozyceję:\n"
+    std::cout << "Wybierz pozycję:\n"
               << "0.Powrót\n"
               << "1.Dodaj Pizzę\n"
               << "2.Dodaj Zestaw\n"
@@ -49,13 +45,13 @@ void Order::addOrderPos() {
     if (orderPos->getIsAdded()) {
         this->list.push_back(orderPos->getList());
     }
-    orderPos = NULL;
+    orderPos = nullptr;
 
 }
 
 void Order::printMenu() {
-    //system("clear");
-    std::cout << "Wybierz pozyceję:\n"
+    system("clear");
+    std::cout << "Wybierz pozycję:\n"
               << "0.Zakończ\n"
               << "1.Dodaj pozycję\n"
               << "2.Usuń pozycję\n"
@@ -64,11 +60,27 @@ void Order::printMenu() {
 }
 
 void Order::printOrder() {
-    std::cout<<convertOrderToString();
+    system("clear");
+    std::cout << convertOrderToString();
 }
 
 void Order::deleteOrderPos() {
-    printOrder();
+    system("clear");
+    bool repeat = true;
+    do{
+        printOrder();
+        std::cout<<"0.Powrót\n";
+        std::cout << "Podaj numer do usunięcia: ";
+        unsigned input;
+        std::cin >> input;
+        if (input > 0 && input<=list.size()){
+            list.erase(list.begin()+input-1);
+        }else if(!input){
+            repeat=false;
+        }else{
+            std::cout<<"Nieprawidłowa wartość!\n";
+        }
+    }while(repeat);
 }
 
 void Order::checkOrderPos() {
@@ -81,60 +93,67 @@ void Order::checkOrderPos() {
 void Order::generateBill() {
     printOrder();
     char confirm;
-    std::string filename;
-    std::cout << "podaj nazwę rachunku: ";
-    std::cin >> filename;
     std::cout << "Czy zakończyłeś zamówienie?(Y/N): ";
     std::cin >> confirm;
     if (toupper(confirm) == 'Y') {
+        std::string filename;
+        std::cout << "podaj nazwę rachunku: ";
+        std::cin >> filename;
         generateOrderBill(filename);
     }
 }
 
-void Order::generateOrderBill(std::string filename) {
+void Order::generateOrderBill(const std::string &filename) {
     ReadFile rf("../MENU/specialOfferPrice.csv");
     std::vector<std::string> specialOfferPrice = std::vector<std::string>();
     specialOfferPrice = splitPromo(rf.getStringFromFile(Flag::ALL_LINES));
     double totalPrice = getTotalPrice();
-    if (std::stod(specialOfferPrice[0])<=totalPrice){
-        totalPrice*= std::stod(specialOfferPrice[1]);
+    if (std::stod(specialOfferPrice[0]) <= totalPrice) {
+        totalPrice *= std::stod(specialOfferPrice[1]);
     }
-    std::string billString=convertOrderToString();
+    std::string billString = convertOrderToString();
     billString += "\n\n\t\t\tRazem do zapłaty: ";
-    billString += std::to_string(totalPrice);
+    billString += ConvertString::cutStringNextChar(std::to_string(totalPrice), '.', 3);
     rf = ReadFile("../MENU/path.txt");
-    WriteToFile::saveToFile(rf.getStringFromFile()+filename+".txt",billString);
+    WriteToFile::saveToFile(rf.getStringFromFile() + filename + ".txt", billString);
 }
 
-std::vector<std::string> Order::splitPromo(std::string input) {
+std::vector<std::string> Order::splitPromo(const std::string &input) {
     std::vector<std::string> toReturn = std::vector<std::string>();
-    std::string toPut="";
-    for(auto &&i : input){
-        if (i!='\n' && i!=EOF){
-            toPut+=i;
-        }else{
+    std::string toPut;
+    for (auto &&i: input) {
+        if (i != '\n' && i != EOF) {
+            toPut += i;
+        } else {
             toReturn.push_back(toPut);
-            toPut="";
+            toPut = "";
         }
     }
     return toReturn;
 }
+
 double Order::getTotalPrice() {
-    double sum=0.0;
-    for(auto &&i:list){
-        for(auto &&j : i){
-            sum+=j.price;
+    double sum = 0.0;
+    for (auto &&i: list) {
+        for (auto &&j: i) {
+            sum += j.price;
         }
     }
     return sum;
 }
+
 std::string Order::convertOrderToString() {
-    std::string toReturn = "";
-    for(int i = 0; i<list.size();i++){
-        toReturn+=list[i][0].name+"\t"+std::to_string(list[i][0].price)+"\n";
+    std::string toReturn;
+    for (int i = 0; i < list.size(); i++) {
+        toReturn += std::to_string(i + 1) + "." + list[i][0].name + "\t"
+                    + ConvertString::cutStringNextChar(std::to_string(list[i][0].price), '.', 3)
+                    + "\n";
         for (int j = 1; j < list[i].size(); j++) {
-            toReturn+="\t\t\t\t"+list[i][j].name+"\t"+std::to_string(list[i][j].price)+"\n";
+            toReturn += "\t\t\t\t" + list[i][j].name + "\t" +
+                        ConvertString::cutStringNextChar(std::to_string(list[i][j].price), '.', 3)
+                        + "\n";
         }
     }
     return toReturn;
 }
+
