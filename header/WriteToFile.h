@@ -4,12 +4,13 @@
 
 #ifndef PIZZATIME_WRITETOFILE_H
 #define PIZZATIME_WRITETOFILE_H
+
 #include "../exceptions/FailOpen.h"
 #include <iostream>
 
 class WriteToFile {
 public:
-    static void saveToFile(std::string path,std::string content);
+    static void saveToFile(std::string path, std::string content);
 };
 
 
