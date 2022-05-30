@@ -20,6 +20,7 @@ void PrintMenu::print() {
     }
 }
 
+
 std::vector<MenuPos> PrintMenu::getMenuList() {
     return menu;
 }
