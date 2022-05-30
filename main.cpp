@@ -13,33 +13,29 @@ int main()
         Order o;
         do
         {
+            system("clear");
             o.printMenu();
             std::cin >> choose;
             switch (choose)
             {
-            case 0:
-                repeat= false;
-                break;
-            case 1:
-                o.addOrderPos();
-                break;
-            case 2:
-                o.deleteOrderPos();
-                break;
-            case 3:
-                o.modifyOrderPos();
-                break;
-            case 4:
-                o.generateBill();
-                while (true)
-                {
-                    /* code */
-                }
-                
-                break;
-            default:
-                std::cout << "nieprawidłowa wartość!\n(nacisnij dowolny klawisz)\n";
-                break;
+                case 0:
+                    repeat= false;
+                    break;
+                case 1:
+                    o.addOrderPos();
+                    break;
+                case 2:
+                    o.deleteOrderPos();
+                    break;
+                case 3:
+                    o.checkOrderPos();
+                    break;
+                case 4:
+                    o.generateBill();
+                    break;
+                default:
+                    std::cout << "nieprawidłowa wartość!\n(nacisnij dowolny klawisz)\n";
+                    break;
             }
         } while (repeat);
     }

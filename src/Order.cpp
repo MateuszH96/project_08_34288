@@ -85,7 +85,7 @@ void Order::deleteOrderPos() {
 }
 
 void Order::checkOrderPos() {
-    char check;
+    std::string check;
     printOrder();
     std::cout << "wpisz cokolwiek aby kontynuować";
     std::cin >> check;
@@ -114,7 +114,7 @@ void Order::generateOrderBill(const std::string &filename) {
     }
     std::string billString = convertOrderToString();
     billString += "\n\n\t\t\tRazem do zapłaty: ";
-    billString += ConvertString::cutStringNextChar(std::to_string(totalPrice), '.', 3);
+    billString += ConvertString::cutStringNextChar(std::to_string(totalPrice), '.', 3)+"zł";
     rf = ReadFile("../MENU/path.txt");
     WriteToFile::saveToFile(rf.getStringFromFile() + filename + ".txt", billString);
 }
@@ -147,12 +147,10 @@ std::string Order::convertOrderToString() {
     std::string toReturn;
     for (int i = 0; i < list.size(); i++) {
         toReturn += std::to_string(i + 1) + "." + list[i][0].name + "\t"
-                    + ConvertString::cutStringNextChar(std::to_string(list[i][0].price), '.', 3)
-                    + "\n";
+                    + ConvertString::cutStringNextChar(std::to_string(list[i][0].price), '.', 3)+"zł"+ "\n";
         for (int j = 1; j < list[i].size(); j++) {
             toReturn += "\t\t\t\t" + list[i][j].name + "\t" +
-                        ConvertString::cutStringNextChar(std::to_string(list[i][j].price), '.', 3)
-                        + "\n";
+                        ConvertString::cutStringNextChar(std::to_string(list[i][j].price), '.', 3)+"zł"+ "\n";
         }
     }
     return toReturn;
