@@ -6,7 +6,6 @@ OrderPos::OrderPos(TYPE_POS typePos) {
     if (typePos != ERROR) {
         pickPos(typePos);
     }
-
 }
 
 OrderPos::~OrderPos() {

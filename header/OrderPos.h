@@ -29,6 +29,7 @@ enum TYPE_POS {
     ERROR
 };
 
+
 class OrderPos {
 public:
     bool isAdded;
