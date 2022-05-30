@@ -26,3 +26,4 @@ std::string ReadFile::getStringFromFile(Flag::Value flags, uint32_t numOfLine) {
     fileToRead.close();
     return line;
 }
+
