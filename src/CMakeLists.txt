@@ -3,4 +3,6 @@ add_library(SRC ReadFile.cpp
                 PrintMenu.cpp
                 Order.cpp
                 OrderPos.cpp
+                WriteToFile.cpp
+                ConvertString.cpp
 )
