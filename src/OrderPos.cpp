@@ -125,11 +125,11 @@ void OrderPos::addAdditives(std::string file) {
 }
 
 void OrderPos::halfPizza(ingredient &toAdd, char size) {
-    menu->print();
     toAdd.price = setPrecision(toAdd.price / 2.0, 2);
     unsigned input = 0;
     bool repeat = true;
     do {
+        std::cout<<"Podaj drugą połowę pizzy: ";
         std::cin >> input;
         if (input > 0 && input <= menu->getMenuList().size()) {
             toAdd.name += "+" + menu->getMenuList()[input - 1].getName();

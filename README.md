@@ -12,6 +12,7 @@
     - drink.csv: podajemy listę napojów
     - ingredient.csv: podajemy listę składników na dowolną pizzę
     - set.csv: podajemy listę zestawów pizzy 
+    - specialOfferPrice.csv: podajemy promocję w pierwszej linii kwota od której obowiązuje, wartość promocji w postaci ułamka dziesiętnego(np 50% to 0.5)
 2. W pliku path.txt podajemy ścieżkę gdzie ma być zapisywany paragon
 
 ## Uruchomienie
